@@ -30,7 +30,7 @@ return new class extends Migration
             ])->nullable();
             $table->boolean('has_children')->default(false);
             $table->text('notes')->nullable();
-            $table->string('interest_status')->default('new');
+            $table->string('interest_status')->default('moderated_interest');
             $table->unsignedTinyInteger('priority')->default(3);
             $table->dateTime('last_contact_at')->nullable();
             $table->dateTime('next_contact_at')->nullable();

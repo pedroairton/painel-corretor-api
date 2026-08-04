@@ -2,9 +2,64 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\Contact\StoreContactRequest;
+use App\Http\Requests\Contact\UpdateContactRequest;
+use App\Http\Resources\ContactResource;
+use App\Models\Client;
+use App\Models\Contact;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class ContactController extends Controller
 {
-    //
+    public function store(StoreContactRequest $request, Client $client)
+    {
+
+        $this->authorize('update', $client);
+
+        $contact = DB::transaction(function () use ($request, $client, &$contact) {
+            $contact = $client->contacts()->create($request->validated());
+
+            $client->syncFormLatestContact();
+
+            return $contact->fresh();
+        });
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Contato criado com sucesso.',
+            'data' => new ContactResource($contact)
+        ], 201);
+    }
+    public function update(UpdateContactRequest $request, Contact $contact)
+    {
+        $this->authorize('update', $contact);
+
+        DB::transaction(function () use ($contact, $request) {
+            $contact->update($request->validated());
+
+            $contact->client->syncFormLatestContact();
+        });
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Contato atualizado com sucesso.',
+            'data' => new ContactResource($contact->fresh())
+        ]);
+    }
+    public function destroy(Contact $contact)
+    {
+        $this->authorize('delete', $contact);
+        
+        DB::transcation(function () use ($contact) {
+            $client = $contact->client;
+            $contact->delete();
+            $client->syncFormLatestContact();
+        });
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Contato excluido com sucesso.',
+        ]);
+    }
 }
