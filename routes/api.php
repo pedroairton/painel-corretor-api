@@ -21,7 +21,7 @@ Route::prefix('/v1')->group(function () {
         Route::delete('/user', [AuthController::class, 'destroy']);
         Route::get('/dashboard', [AuthController::class, 'dashboard']);
         Route::apiResource('/clients', ClientController::class);
-        Route::patch('/clients/{client}/priority', [ClientController::class, 'updatePriority']);
+        Route::patch('/clients/{client}', [ClientController::class, 'patchClient']);
         Route::post('/clients/{client}/contacts', [ContactController::class, 'store']);
         Route::put('/contacts/{contact}', [ContactController::class, 'update']);
         Route::delete('/contacts/{contact}', [ContactController::class, 'destroy']);

@@ -19,4 +19,7 @@ enum ContactResult:string
             self::CLOSED_DEAL => 'Negócio fecahdo',
         };
     }
+    public static function values():array{
+        return array_column(self::cases(), 'value');
+    }
 }
