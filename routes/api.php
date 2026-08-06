@@ -19,7 +19,7 @@ Route::prefix('/v1')->group(function () {
         Route::get('/user', [AuthController::class, 'show']);
         Route::put('/user', [AuthController::class, 'update']);
         Route::delete('/user', [AuthController::class, 'destroy']);
-        Route::get('/dashboard', [AuthController::class, 'dashboard']);
+        Route::get('/dashboard', [ClientController::class, 'dashboard']);
         Route::apiResource('/clients', ClientController::class);
         Route::patch('/clients/{client}', [ClientController::class, 'patchClient']);
         Route::post('/clients/{client}/contacts', [ContactController::class, 'store']);

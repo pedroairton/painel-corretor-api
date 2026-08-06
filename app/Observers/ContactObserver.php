@@ -11,7 +11,7 @@ class ContactObserver
      */
     public function created(Contact $contact): void
     {
-        $contact->client->syncFormLatestContact();
+        $contact->client->syncFromLatestContact();
     }
 
     /**
@@ -19,7 +19,7 @@ class ContactObserver
      */
     public function updated(Contact $contact): void
     {
-        $contact->client->syncFormLatestContact();
+        $contact->client->syncFromLatestContact();
     }
 
     /**
@@ -27,7 +27,7 @@ class ContactObserver
      */
     public function deleted(Contact $contact): void
     {
-        $contact->client->syncFormLatestContact();
+        $contact->client->syncFromLatestContact();
     }
 
     /**

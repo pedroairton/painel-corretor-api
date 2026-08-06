@@ -46,7 +46,7 @@ class Client extends Model
         return $this->hasOne(Contact::class)->latestOfMany('contact_date');
     }
 
-    public function syncFormLatestContact(){
+    public function syncFromLatestContact(){
         $lastContact = $this->latestContact->first();
 
         if(!$lastContact){

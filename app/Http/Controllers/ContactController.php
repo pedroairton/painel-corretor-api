@@ -20,7 +20,7 @@ class ContactController extends Controller
         $contact = DB::transaction(function () use ($request, $client, &$contact) {
             $contact = $client->contacts()->create($request->validated());
 
-            $client->syncFormLatestContact();
+            $client->syncFromLatestContact();
 
             return $contact->fresh();
         });
@@ -38,7 +38,7 @@ class ContactController extends Controller
         DB::transaction(function () use ($contact, $request) {
             $contact->update($request->validated());
 
-            $contact->client->syncFormLatestContact();
+            $contact->client->syncFromLatestContact();
         });
 
         return response()->json([
@@ -54,7 +54,7 @@ class ContactController extends Controller
         DB::transcation(function () use ($contact) {
             $client = $contact->client;
             $contact->delete();
-            $client->syncFormLatestContact();
+            $client->syncFromLatestContact();
         });
 
         return response()->json([
