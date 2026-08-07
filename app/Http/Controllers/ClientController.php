@@ -19,22 +19,29 @@ class ClientController extends Controller
         $clients = Client::query()
             ->where('user_id', $request->user()->id)
             ->with('latestContact')
-            ->filter($request->only(['search', 'status', 'sort']))
+            ->filters($request->only([
+                'search',
+                'status',
+                'sort'
+            ]))
             ->paginate(10)
             ->withQueryString();
+
         return ClientResource::collection($clients);
     }
-    public function show(Client $client){
+    public function show(Client $client)
+    {
         $this->authorize('view', $client);
 
         $client->load([
-            'contacts' => fn ($query) => 
-            $query->latest('contact_date')
+            'contacts' => fn($query) =>
+                $query->latest('contact_date')
         ]);
 
         return new ClientResource($client);
     }
-    public function store(StoreClientRequest $request){
+    public function store(StoreClientRequest $request)
+    {
         $client = $request->user()->clients()->create($request->validated());
 
         return response()->json([
@@ -43,7 +50,8 @@ class ClientController extends Controller
             'data' => new ClientResource($client)
         ], 201);
     }
-    public function update(UpdateClientRequest $request, Client $client){
+    public function update(UpdateClientRequest $request, Client $client)
+    {
         $this->authorize('update', $client);
 
         $client->update($request->validated());
@@ -54,7 +62,8 @@ class ClientController extends Controller
             'data' => new ClientResource($client->fresh())
         ]);
     }
-    public function patchClient(Request $request, Client $client){
+    public function patchClient(Request $request, Client $client)
+    {
         $this->authorize('update', $client);
 
         $request->validate([
@@ -62,10 +71,10 @@ class ClientController extends Controller
             'interest_status' => ['sometimes', Rule::enum(InterestStatus::class)]
         ]);
 
-        if(isset($request->priority)){
+        if (isset($request->priority)) {
             $client->update(['priority' => $request->priority]);
         }
-        if(isset($request->interest_status)){
+        if (isset($request->interest_status)) {
             $client->update(['interest_status' => $request->interest_status]);
         }
 
@@ -75,7 +84,8 @@ class ClientController extends Controller
             // 'data' => new ClientResource($client->fresh())
         ]);
     }
-    public function destroy(Client $client){
+    public function destroy(Client $client)
+    {
         $this->authorize('delete', $client);
 
         $client->delete();
@@ -87,7 +97,7 @@ class ClientController extends Controller
     }
     public function dashboard(Request $request)
     {
-        
+
         $user = $request->user();
 
         $clientsQuery = Client::query()->where('user_id', $user->id);
