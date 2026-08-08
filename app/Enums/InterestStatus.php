@@ -5,7 +5,7 @@ namespace App\Enums;
 enum InterestStatus:string
 {
     case VERY_INTERESTED = 'very_interested';
-    case MODERATED_INTEREST = 'moderate_interested';
+    case MODERATED_INTEREST = 'moderated_interest';
     case LOW_INTEREST = 'low_interest';
     case NO_INTEREST = 'no_interest';
     case CLOSED_DEAL = 'closed_deal';

@@ -24,6 +24,7 @@ class StoreClientRequest extends FormRequest
      */
     public function rules(): array
     {
+        // dd($this->all());
         return [
             'name' => ['required', 'string', 'max:255'],
             'phone' => ['required', 'string', 'max:20'],
@@ -36,7 +37,7 @@ class StoreClientRequest extends FormRequest
             'has_children' => ['required', 'boolean'],
             'notes' => ['nullable', 'string'],
             'interest_status' => ['required', Rule::enum(InterestStatus::class)],
-            'priority' > [
+            'priority' => [
                 'nullable',
                 'integer',
                 'between:1,5',

@@ -36,7 +36,7 @@ class UpdateClientRequest extends FormRequest
             'has_children' => ['sometimes', 'boolean'],
             'notes' => ['nullable', 'string'],
             'interest_status' => ['sometimes', Rule::enum(InterestStatus::class)],
-            'priority' > [
+            'priority' => [
                 'nullable',
                 'integer',
                 'between:1,5',
