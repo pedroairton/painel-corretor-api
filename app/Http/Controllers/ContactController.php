@@ -9,13 +9,14 @@ use App\Models\Client;
 use App\Models\Contact;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Gate;
 
 class ContactController extends Controller
 {
     public function store(StoreContactRequest $request, Client $client)
     {
 
-        $this->authorize('update', $client);
+        Gate::authorize('update', $client);
 
         $contact = DB::transaction(function () use ($request, $client, &$contact) {
             $contact = $client->contacts()->create($request->validated());
@@ -33,7 +34,7 @@ class ContactController extends Controller
     }
     public function update(UpdateContactRequest $request, Contact $contact)
     {
-        $this->authorize('update', $contact);
+        Gate::authorize('update', $contact);
 
         DB::transaction(function () use ($contact, $request) {
             $contact->update($request->validated());
@@ -49,7 +50,7 @@ class ContactController extends Controller
     }
     public function destroy(Contact $contact)
     {
-        $this->authorize('delete', $contact);
+        Gate::authorize('delete', $contact);
         
         DB::transcation(function () use ($contact) {
             $client = $contact->client;

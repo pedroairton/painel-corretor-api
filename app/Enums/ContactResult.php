@@ -16,7 +16,7 @@ enum ContactResult:string
             self::NOT_ANSWER => 'Não atendeu',
             self::CALL_LATER => 'Retornar depois',
             self::VISIT_SCHEDULED => 'Visita agendada',
-            self::CLOSED_DEAL => 'Negócio fecahdo',
+            self::CLOSED_DEAL => 'Negócio fechado',
         };
     }
     public static function values():array{

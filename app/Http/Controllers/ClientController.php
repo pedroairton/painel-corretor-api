@@ -10,6 +10,7 @@ use App\Models\Client;
 use App\Models\Contact;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Validation\Rule;
 
 class ClientController extends Controller
@@ -24,6 +25,7 @@ class ClientController extends Controller
                 'status',
                 'sort'
             ]))
+            ->withCount('contacts')
             ->paginate(10)
             ->withQueryString();
 
@@ -31,7 +33,7 @@ class ClientController extends Controller
     }
     public function show(Client $client)
     {
-        $this->authorize('view', $client);
+        Gate::authorize('view', $client);
 
         $client->load([
             'contacts' => fn($query) =>
@@ -52,7 +54,7 @@ class ClientController extends Controller
     }
     public function update(UpdateClientRequest $request, Client $client)
     {
-        $this->authorize('update', $client);
+        Gate::authorize('update', $client);
 
         $client->update($request->validated());
 
@@ -64,7 +66,7 @@ class ClientController extends Controller
     }
     public function patchClient(Request $request, Client $client)
     {
-        $this->authorize('update', $client);
+        Gate::authorize('update', $client);
 
         $request->validate([
             'priority' => 'sometimes|integer|between:1,5',
@@ -86,7 +88,7 @@ class ClientController extends Controller
     }
     public function destroy(Client $client)
     {
-        $this->authorize('delete', $client);
+        Gate::authorize('delete', $client);
 
         $client->delete();
 
