@@ -31,9 +31,13 @@ class ClientResource extends JsonResource
                 'label' => $this->interest_status->label(),
             ],
             'priority' => $this->priority,
-            'last_contact' => optional(
-                $this->contacts->first()
-            )?->contact_date,
+            'contacts_count' => $this->contacts_count,
+            'latest_contact' => new ContactResource(
+                $this->whenLoaded('latestContact')
+            ),
+            'contacts' => ContactResource::collection(
+                $this->whenLoaded('contacts')
+            ),
             'created_at' => $this->created_at
         ];
     }

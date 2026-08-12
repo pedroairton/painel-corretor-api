@@ -28,7 +28,7 @@ class ClientController extends Controller
             ->withCount('contacts')
             ->paginate(10)
             ->withQueryString();
-
+    
         return ClientResource::collection($clients);
     }
     public function show(Client $client)
@@ -38,8 +38,10 @@ class ClientController extends Controller
         $client->load([
             'contacts' => fn($query) =>
                 $query->latest('contact_date')
+                ->orderBy('contact_date')
+                ->orderBy('updated_at', 'desc')
         ]);
-
+        
         return new ClientResource($client);
     }
     public function store(StoreClientRequest $request)

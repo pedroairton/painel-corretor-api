@@ -119,7 +119,7 @@ class Client extends Model
             $query->orderByRaw("
                 CASE interest_status
                     WHEN 'very_interested' THEN 1
-                    WHEN 'moderate_interest' THEN 2
+                    WHEN 'moderated_interest' THEN 2
                     WHEN 'low_interest' THEN 3
                     WHEN 'no_interest' THEN 4
                     WHEN 'closed_deal' THEN 5
